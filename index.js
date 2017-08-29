@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const fs = require('fs');
+//const fs = require('fs');
 const date = require('date');
 const bot = new Discord.Client();
 const prefix = "!";
