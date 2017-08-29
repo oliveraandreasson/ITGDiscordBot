@@ -17,8 +17,10 @@ Date.prototype.getWeek = function() {
 }
 
 var weekNumber = (new Date()).getWeek();
+var widthSchema = "600"
+var heightSchema = "600"
 
-var schemaLink = "http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=80220/sv-se&type=1&id={EA17E85E-CBFC-4836-935C-04780337F6D5}&period=&week="+weekNumber+"&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=0&width=1883&height=847&maxwidth=1883&maxheight=847"
+var schemaLink = "http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=80220/sv-se&type=1&id={EA17E85E-CBFC-4836-935C-04780337F6D5}&period=&week="+weekNumber+"&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=0&width="+widthSchema+"&height="+heightSchema+"&maxwidth=1883&maxheight=847"
 
 bot.on("message", (message) => {
 
