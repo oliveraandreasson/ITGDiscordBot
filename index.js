@@ -3,7 +3,7 @@ const fs = require("fs");
 const date = require("date");
 const bot = new Discord.Client();
 const prefix = "!";
-const botToken = require("./token");
+const botToken = require("./bottoken");
 
 
 bot.on("ready", () => {
