@@ -11,6 +11,18 @@ bot.on("ready", () => {
     bot.user.setGame("Skriv !help för hjälp.");
 });
 
+var dabRespond = [
+    "Du kan inte tvinga mig",
+    "Du kan inte tvinga mig",
+    "Du kan inte tvinga mig",
+    "Du kan inte tvinga mig",
+    "Du kan inte tvinga mig",
+    "Du kan inte tvinga mig",
+    "Vad är det du inte förstår?",
+    "Jävla människor ska alltid komma och tjata",
+    "Okej då, ***DAB***"
+];
+
 Date.prototype.getWeek = function() {
     var onejan = new Date(this.getFullYear(), 0, 1);
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
@@ -53,6 +65,11 @@ bot.on("message", (message) => {
         case "github":
             message.author.send("https://github.com/ChilladeChillin/ITGDiscordBot");
             break;
+        case "dab":
+            message.channel.send(dabRespond[Math.floor(Math.random() * dabRespond.length)]);
+            break;
+        //case "bordejag"
+            //[Math.floor(Math.random() * bordejag.length)]
     }
 });
 
