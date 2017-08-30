@@ -37,7 +37,7 @@ bot.on("message", (message) => {
             message.channel.send({
                 embed: new Discord.RichEmbed()
                     .setAuthor("Kommandon:", bot.user.avatarURL)
-                    .addField("Allmäna kommandon:", "!help - visar denna meny")
+                    .addField("Allmäna kommandon:", "!help - visar denna meny\n!github - skickar länken till botens github repo")
                     .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema")
                     .setColor("0x111111")
             });
@@ -49,6 +49,9 @@ bot.on("message", (message) => {
                 .setImage(schemaLink)
                 .setColor("0x"+("000000"+Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
             });
+            break;
+        case "github":
+            message.author.send("https://github.com/ChilladeChillin/ITGDiscordBot");
             break;
     }
 });
