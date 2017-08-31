@@ -68,6 +68,16 @@ bot.on("message", (message) => {
         case "dab":
             message.channel.send(dabRespond[Math.floor(Math.random() * dabRespond.length)]);
             break;
+        case "säg":
+            var textFromSender = message.content;
+            message.delete(0);
+            if (message.author.id==="164283691802165250") {
+                message.channel.send(message.content.substring(5));
+                break;
+            }
+            else {
+                break;
+            }
         //case "bordejag"
             //[Math.floor(Math.random() * bordejag.length)]
     }
