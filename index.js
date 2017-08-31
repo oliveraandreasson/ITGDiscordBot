@@ -49,7 +49,7 @@ bot.on("message", (message) => {
             message.channel.send({
                 embed: new Discord.RichEmbed()
                     .setAuthor("Kommandon:", bot.user.avatarURL)
-                    .addField("Allmäna kommandon:", "!help - visar denna meny\n!github - skickar länken till botens github repo")
+                    .addField("Allmäna kommandon:", "!help - visar denna meny\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)")
                     .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema")
                     .setColor("0x111111")
             });
@@ -68,7 +68,7 @@ bot.on("message", (message) => {
         case "dab":
             message.channel.send(dabRespond[Math.floor(Math.random() * dabRespond.length)]);
             break;
-        case "säg":
+        case "say":
             var textFromSender = message.content;
             message.delete(0);
             if (message.author.id==="164283691802165250") {
@@ -78,6 +78,10 @@ bot.on("message", (message) => {
             else {
                 break;
             }
+        case "ping":
+            message.channel.send(bot.ping+" ms");
+            break;
+            
         //case "bordejag"
             //[Math.floor(Math.random() * bordejag.length)]
     }
