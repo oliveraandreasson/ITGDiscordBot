@@ -50,16 +50,16 @@ bot.on("message", (message) => {
                 embed: new Discord.RichEmbed()
                     .setAuthor("Kommandon:", bot.user.avatarURL)
                     .addField("Allmäna kommandon:", "!help - visar denna meny\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)")
-                    .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema")
+                    .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!hex - ger dig en slumpmässig färg")
                     .setColor("0x111111")
             });
             break;
         case "schema":
             message.channel.send({
-            embed: new Discord.RichEmbed()
-                .setAuthor("Schema:", bot.user.avatarURL)
-                .setImage(schemaLink)
-                .setColor("0x"+("000000"+Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
+                embed: new Discord.RichEmbed()
+                    .setAuthor("Schema:")
+                    .setImage(schemaLink)
+                    .setColor("0x"+("000000"+Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
             });
             break;
         case "github":
@@ -81,7 +81,14 @@ bot.on("message", (message) => {
         case "ping":
             message.channel.send(bot.ping+" ms");
             break;
-            
+        case "hex":
+            var randomhex = ("000000"+Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6);
+            message.channel.send({
+                embed: new Discord.RichEmbed()
+                    .setAuthor("Hex:")
+                    .setDescription("#"+randomhex)
+                    .setColor("0x"+randomhex)
+            });
         //case "bordejag"
             //[Math.floor(Math.random() * bordejag.length)]
     }
