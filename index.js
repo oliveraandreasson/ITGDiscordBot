@@ -49,7 +49,7 @@ bot.on("message", (message) => {
             message.channel.send({
                 embed: new Discord.RichEmbed()
                     .setAuthor("Kommandon:", bot.user.avatarURL)
-                    .addField("Allmäna kommandon:", "!help - visar denna meny\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)")
+                    .addField("Allmäna kommandon:", "!help - visar denna meny\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)\n!poll <fråga> - Starta en ja eller nej fråga")
                     .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!hex - ger dig en slumpmässig färg")
                     .setColor("0x111111")
             });
@@ -89,6 +89,20 @@ bot.on("message", (message) => {
                     .setDescription("#"+randomhex)
                     .setColor("0x"+randomhex)
             });
+            break;
+        case "poll":
+            var question = message.content.substring(6)
+            message.delete(0);
+            message.channel.send(question+"\n\n`👍=JA 👎=NEJ`")
+                .then(function (message) {
+                    message.react("👍")
+                    message.react("👎")
+                }).catch(function() {
+                    console.log("Reaktionen gick inte hela vägen fram")
+                   });
+            break;
+        default:
+            message.channel.send("```Detta kommando existerar inte (än)\nSkriv !help för att se de kommandon som faktiskt existerar```");
         //case "bordejag"
             //[Math.floor(Math.random() * bordejag.length)]
     }
