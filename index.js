@@ -57,7 +57,7 @@ bot.on("message", (message) => {
         case "schema":
             message.channel.send({
                 embed: new Discord.RichEmbed()
-                    .setAuthor("Schema:")
+                    .setAuthor("Schema V. "+weekNumber+":")
                     .setImage(schemaLink)
                     .setColor("0x"+("000000"+Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
             });
