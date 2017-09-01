@@ -76,6 +76,7 @@ bot.on("message", (message) => {
                 break;
             }
             else {
+                message.author.send("Du har inte tillåtelse att använda detta kommando");
                 break;
             }
         case "ping":
@@ -101,6 +102,7 @@ bot.on("message", (message) => {
                     console.log("Reaktionen gick inte hela vägen fram")
                    });
             break;
+        case ""
         default:
             message.channel.send("```Detta kommando existerar inte (än)\nSkriv !help för att se de kommandon som faktiskt existerar```");
         //case "bordejag"
