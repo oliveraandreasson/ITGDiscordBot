@@ -103,7 +103,7 @@ bot.on("message", (message) => {
                    });
             break;
         case "pinpoll":
-            var question = message.content.substring(6)
+            var question = message.content.substring(9)
             message.delete(0);
             message.channel.send(question+"\n\n`👍=JA 👎=NEJ`")
                 .then(function (message) {
