@@ -102,7 +102,18 @@ bot.on("message", (message) => {
                     console.log("Reaktionen gick inte hela vägen fram")
                    });
             break;
-        case ""
+        case "pinpoll":
+            var question = message.content.substring(6)
+            message.delete(0);
+            message.channel.send(question+"\n\n`👍=JA 👎=NEJ`")
+                .then(function (message) {
+                    message.react("👍")
+                    message.react("👎")
+                    message.pin()
+                }).catch(function() {
+                    console.log("Reaktionen gick inte hela vägen fram (pinpoll)")
+                    });
+            break;
         default:
             message.channel.send("```Detta kommando existerar inte (än)\nSkriv !help för att se de kommandon som faktiskt existerar```");
         //case "bordejag"
