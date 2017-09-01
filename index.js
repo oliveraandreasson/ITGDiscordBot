@@ -114,6 +114,21 @@ bot.on("message", (message) => {
                     console.log("Reaktionen gick inte hela vägen fram (pinpoll)")
                     });
             break;
+        case "hexdisplay":
+            var hexMessage = message.content.substring(12)
+            if (hexMessage.substr(0, 1) === "#") {
+                var hexMessageFix = hexMessage.substing(1)
+            }
+            else {
+                var hexMessageFix = hexMessage
+            }
+            message.channel.send({
+                embed: new Discord.RichEmbed()
+                    .setAuthor("Hex:")
+                    .setDescription("#"+hexMessageFix)
+                    .setColor("0x"+hexMessageFix)
+            });
+            break;
         default:
             message.channel.send("```Detta kommando existerar inte (än)\nSkriv !help för att se de kommandon som faktiskt existerar```");
         //case "bordejag"
