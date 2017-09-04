@@ -53,8 +53,9 @@ bot.on("message", (message) => {
             message.channel.send({
                 embed: new Discord.RichEmbed()
                     .setAuthor("Kommandon:", bot.user.avatarURL)
-                    .addField("Allmäna kommandon:", "!help - visar denna meny\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)\n!poll <fråga> - Starta en ja eller nej fråga")
-                    .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!hex - ger dig en slumpmässig färg\n!schemavecka <vecka> - visar schemat från en viss vecka\n!vecka - visar veckan\n!borde - låt boten svara på livets svåra frågor")
+                    .addField("Allmäna kommandon:", "!help - visar denna meny\n!dab - sprid cancer\n!poll <fråga> - Starta en ja eller nej fråga\n!pinpoll - samma som !poll fast den pinnar också\n!borde - låt boten svara på livets svåra frågor")
+                    .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!schemavecka <vecka> - visar schemat från en viss vecka\n!vecka - visar veckan")
+                    .addField("Discord kommandon:", "!hex - ger dig en slumpmässig färg\n!hexdisplay <hex> - visar fägen som det inskrivna hex nummret ger\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)\n!getid - Visar ditt user id")
                     .setColor("0x111111")
             });
             break;
@@ -160,6 +161,9 @@ bot.on("message", (message) => {
                     .setDescription("#"+hexMessageFix)
                     .setColor("0x"+hexMessageFix)
             });
+            break;
+        case "getid":
+            message.channel.send(message.author.id);
             break;
         case "borde":
             message.channel.send(borde[Math.floor(Math.random()*borde.length)]+" "+message.author.toString());
