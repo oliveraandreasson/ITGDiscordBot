@@ -10,10 +10,12 @@ bot.on("ready", () => {
     console.log("Klar");
     bot.user.setGame("Skriv !help för hjälp.");
 });
+
 var borde = [
     "Ja",
     "Nej"
-]
+];
+
 var dabRespond = [
     "Du kan inte tvinga mig",
     "Du kan inte tvinga mig",
@@ -34,11 +36,9 @@ Date.prototype.getWeek = function() {
 var weekNumber = (new Date()).getWeek();
 var widthSchema = "600"
 var heightSchema = "600"
-
 var schemaLink = "http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=80220/sv-se&type=1&id={EA17E85E-CBFC-4836-935C-04780337F6D5}&period=&week="+weekNumber+"&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=0&width="+widthSchema+"&height="+heightSchema+"&maxwidth=1883&maxheight=847"
 
 bot.on("message", (message) => {
-
     if (!message.content.startsWith(prefix)) return;
     if (message.author.bot) return;
     
@@ -47,7 +47,6 @@ bot.on("message", (message) => {
     var split = message.content.substring(prefix.length).split(' ');
     
     switch (split[0].toLowerCase()) {
-
         case "h":
         case "help":
             message.channel.send({
@@ -170,7 +169,6 @@ bot.on("message", (message) => {
             break;
         default:
             message.channel.send("```Detta kommando existerar inte (än)\nSkriv !help för att se de kommandon som faktiskt existerar```");
-        
     }
 });
 
