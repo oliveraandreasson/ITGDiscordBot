@@ -51,10 +51,12 @@ bot.on("message", (message) => {
                 embed: new Discord.RichEmbed()
                     .setAuthor("Kommandon:", bot.user.avatarURL)
                     .addField("Allmäna kommandon:", "!help - visar denna meny\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)\n!poll <fråga> - Starta en ja eller nej fråga")
-                    .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!hex - ger dig en slumpmässig färg\n!schemavecka <vecka> - visar schemat från en viss vecka")
+                    .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!hex - ger dig en slumpmässig färg\n!schemavecka <vecka> - visar schemat från en viss vecka\n!vecka - visar veckan")
                     .setColor("0x111111")
             });
             break;
+        case "vecka":
+            message.channel.send(weekNumber);
         case "s":
         case "schema":
             message.channel.send({
