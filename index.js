@@ -45,6 +45,7 @@ bot.on("message", (message) => {
     
     switch (split[0].toLowerCase()) {
 
+        case "h":
         case "help":
             message.channel.send({
                 embed: new Discord.RichEmbed()
@@ -54,6 +55,7 @@ bot.on("message", (message) => {
                     .setColor("0x111111")
             });
             break;
+        case "s":
         case "schema":
             message.channel.send({
                 embed: new Discord.RichEmbed()
@@ -68,6 +70,7 @@ bot.on("message", (message) => {
         case "dab":
             message.channel.send(dabRespond[Math.floor(Math.random() * dabRespond.length)]);
             break;
+        case "säg":
         case "say":
             var textFromSender = message.content;
             message.delete(0);
@@ -119,6 +122,7 @@ bot.on("message", (message) => {
                 message.author.send("Du har inte tillåtelse att använda detta kommando");
             }
             break;
+        case "hd":
         case "hexdisplay":
             var hexMessage = message.content.substring(12)
             if (hexMessage.substr(0, 1) === "#") {
