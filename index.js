@@ -57,6 +57,7 @@ bot.on("message", (message) => {
             break;
         case "vecka":
             message.channel.send(weekNumber);
+            break;
         case "s":
         case "schema":
             message.channel.send({
