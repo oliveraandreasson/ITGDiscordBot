@@ -10,7 +10,10 @@ bot.on("ready", () => {
     console.log("Klar");
     bot.user.setGame("Skriv !help för hjälp.");
 });
-
+var borde = [
+    "Ja",
+    "Nej"
+]
 var dabRespond = [
     "Du kan inte tvinga mig",
     "Du kan inte tvinga mig",
@@ -158,10 +161,12 @@ bot.on("message", (message) => {
                     .setColor("0x"+hexMessageFix)
             });
             break;
+        case "borde":
+            message.channel.send([Math.floor(Math.random() * borde.length)]);
+            break;
         default:
             message.channel.send("```Detta kommando existerar inte (än)\nSkriv !help för att se de kommandon som faktiskt existerar```");
-        //case "bordejag"
-            //[Math.floor(Math.random() * bordejag.length)]
+        
     }
 });
 
