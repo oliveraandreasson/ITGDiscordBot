@@ -105,7 +105,8 @@ bot.on("message", (message) => {
         case "pinpoll":
             var question = message.content.substring(9)
             message.delete(0);
-            message.channel.send(question+"\n\n`👍=JA 👎=NEJ`")
+            if (message.author.id==="164283691802165250" || "349987894171271178") {
+                message.channel.send(question+"\n\n`👍=JA 👎=NEJ`")
                 .then(function (message) {
                     message.react("👍")
                     message.react("👎")
@@ -113,6 +114,10 @@ bot.on("message", (message) => {
                 }).catch(function() {
                     console.log("Reaktionen gick inte hela vägen fram (pinpoll)")
                     });
+            }
+            else {
+                message.author.send("Du har inte tillåtelse att använda detta kommando");
+            }
             break;
         case "hexdisplay":
             var hexMessage = message.content.substring(12)
