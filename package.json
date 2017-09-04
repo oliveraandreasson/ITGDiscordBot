@@ -4,8 +4,10 @@
   "description": "En bot till discord med funktioner som att visa schemat",
   "main": "index.js",
   "dependencies": {
-    "discord.js": "^11.1.0",
+    "bufferutil": "^3.0.2",
     "date": "^1.0.2",
+    "discord.js": "^11.1.0",
+    "erlpack": "github:hammerandchisel/erlpack",
     "fs": "^0.0.1-security"
   },
   "devDependencies": {},
