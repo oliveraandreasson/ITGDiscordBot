@@ -162,7 +162,7 @@ bot.on("message", (message) => {
             });
             break;
         case "borde":
-            message.channel.send([Math.floor(Math.random() * borde.length)]);
+            message.channel.sendMessage(borde[Math.floor(Math.random()*borde.length)]+message.author.toString());
             break;
         default:
             message.channel.send("```Detta kommando existerar inte (än)\nSkriv !help för att se de kommandon som faktiskt existerar```");
