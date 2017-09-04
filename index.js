@@ -54,7 +54,7 @@ bot.on("message", (message) => {
                 embed: new Discord.RichEmbed()
                     .setAuthor("Kommandon:", bot.user.avatarURL)
                     .addField("Allmäna kommandon:", "!help - visar denna meny\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)\n!poll <fråga> - Starta en ja eller nej fråga")
-                    .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!hex - ger dig en slumpmässig färg\n!schemavecka <vecka> - visar schemat från en viss vecka\n!vecka - visar veckan")
+                    .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!hex - ger dig en slumpmässig färg\n!schemavecka <vecka> - visar schemat från en viss vecka\n!vecka - visar veckan\n!borde - låt boten svara på livets svåra frågor")
                     .setColor("0x111111")
             });
             break;
@@ -162,7 +162,7 @@ bot.on("message", (message) => {
             });
             break;
         case "borde":
-            message.channel.sendMessage(borde[Math.floor(Math.random()*borde.length)]+message.author.toString());
+            message.channel.send(borde[Math.floor(Math.random()*borde.length)]+" "+message.author.toString());
             break;
         default:
             message.channel.send("```Detta kommando existerar inte (än)\nSkriv !help för att se de kommandon som faktiskt existerar```");
