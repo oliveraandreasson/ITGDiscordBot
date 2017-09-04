@@ -51,7 +51,7 @@ bot.on("message", (message) => {
                 embed: new Discord.RichEmbed()
                     .setAuthor("Kommandon:", bot.user.avatarURL)
                     .addField("Allmäna kommandon:", "!help - visar denna meny\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)\n!poll <fråga> - Starta en ja eller nej fråga")
-                    .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!hex - ger dig en slumpmässig färg")
+                    .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!hex - ger dig en slumpmässig färg\n!schemavecka <vecka> - visar schemat från en viss vecka")
                     .setColor("0x111111")
             });
             break;
@@ -61,6 +61,23 @@ bot.on("message", (message) => {
                 embed: new Discord.RichEmbed()
                     .setAuthor("Schema v."+weekNumber+":")
                     .setImage(schemaLink)
+                    .setColor("0x"+("000000"+Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
+            });
+            break;
+        //case "sv":
+        case "schemavecka":
+            /*if (message.content = "!schemavecka") {
+                var valfriVecka = message.content.substring(13);
+            }
+            else {
+                var valfriVecka = message.content.substring(4);
+                console.log(valfriVecka);
+            }*/
+            var valfriVecka = message.content.substring(13)
+            message.channel.send({
+                embed: new Discord.RichEmbed()
+                    .setAuthor("Schema v."+valfriVecka+":")
+                    .setImage("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=80220/sv-se&type=1&id={EA17E85E-CBFC-4836-935C-04780337F6D5}&period=&week="+valfriVecka+"&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=0&width="+widthSchema+"&height="+heightSchema+"&maxwidth=1883&maxheight=847")
                     .setColor("0x"+("000000"+Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
             });
             break;
