@@ -165,6 +165,7 @@ bot.on("message", (message) => {
         case "getid":
             message.channel.send(message.author.id);
             break;
+        case "är":
         case "borde":
             message.channel.send(borde[Math.floor(Math.random()*borde.length)]+" "+message.author.toString());
             break;
