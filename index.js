@@ -135,8 +135,9 @@ bot.on("message", (message) => {
                 message.channel.send(question+"\n\n`👍=JA 👎=NEJ`")
                 .then(function (message) {
                     message.react("👍")
-                    message.react("👎")
                     message.pin()
+                    //delay(10)
+                    message.react("👎")
                 }).catch(function() {
                     console.log("Reaktionen gick inte hela vägen fram (pinpoll)")
                     });
