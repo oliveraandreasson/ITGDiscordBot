@@ -45,7 +45,6 @@ Date.prototype.getWeek = function() {
 var weekNumber = (new Date()).getWeek();
 var widthSchema = "600"
 var heightSchema = "600"
-var schemaLink = "http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=80220/sv-se&type=1&id={EA17E85E-CBFC-4836-935C-04780337F6D5}&period=&week="+weekNumber+"&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=0&width="+widthSchema+"&height="+heightSchema+"&maxwidth=1883&maxheight=847"
 
 bot.on("message", (message) => {
     if (!message.content.startsWith(prefix)) return;
@@ -72,27 +71,16 @@ bot.on("message", (message) => {
             break;
         case "s":
         case "schema":
-            message.channel.send({
-                embed: new Discord.RichEmbed()
-                    .setAuthor("Schema v."+weekNumber+":")
-                    .setImage(schemaLink)
-                    .setColor("0x"+("000000"+Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
-            });
-            break;
-        //case "sv":
-        case "schemavecka":
-            /*if (message.content = "!schemavecka") {
-                var valfriVecka = message.content.substring(13);
+            var valfriVecka = message.content.substring(8)
+            if (valfriVecka === null) {
+                valfriVecka = weekNumber;
             }
-            else {
-                var valfriVecka = message.content.substring(4);
-                console.log(valfriVecka);
-            }*/
-            var valfriVecka = message.content.substring(13)
+            
             message.channel.send({
                 embed: new Discord.RichEmbed()
                     .setAuthor("Schema v."+valfriVecka+":")
-                    .setImage("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=80220/sv-se&type=1&id={EA17E85E-CBFC-4836-935C-04780337F6D5}&period=&week="+valfriVecka+"&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=0&width="+widthSchema+"&height="+heightSchema+"&maxwidth=1883&maxheight=847")
+                    .setImage("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=80220/sv-se&type=1&id={EA17E85E-CBFC-4836-935C-04780337F6D5}&period=&week="+valfriVecka+
+                    "&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=0&width="+widthSchema+"&height="+heightSchema+"&maxwidth=1883&maxheight=847")
                     .setColor("0x"+("000000"+Math.random().toString(16).slice(2, 8).toUpperCase()).slice(-6))
             });
             break;
