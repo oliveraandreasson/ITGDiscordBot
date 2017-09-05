@@ -16,15 +16,6 @@ var borde = [
     "Nej"
 ];
 
-var ryss = [
-    "Du klarade dig",
-    "Du klarade dig",
-    "Du klarade dig",
-    "Du klarade dig",
-    "Du klarade dig",
-    "Du dog"
-];
-
 var dabRespond = [
     "Du kan inte tvinga mig",
     "Du kan inte tvinga mig",
@@ -183,11 +174,8 @@ bot.on("message", (message) => {
                 else {
                     message.channel.send("Du överlevde "+message.author.toString());
                     skott -= 1;
-                    console.log(skott);
                 }
             }
-            
-            //message.channel.send(ryss[Math.floor(Math.random()*ryss.length)]+" "+message.author.toString());
             break;
         case "wikipedia":
             var wikiSearch = message.content.substring(11)
