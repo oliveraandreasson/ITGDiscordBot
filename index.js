@@ -16,6 +16,15 @@ var borde = [
     "Nej"
 ];
 
+var ryss = [
+    "Du klarade dig",
+    "Du klarade dig",
+    "Du klarade dig",
+    "Du klarade dig",
+    "Du klarade dig",
+    "Du dog"
+];
+
 var dabRespond = [
     "Du kan inte tvinga mig",
     "Du kan inte tvinga mig",
@@ -165,9 +174,17 @@ bot.on("message", (message) => {
         case "getid":
             message.channel.send(message.author.id);
             break;
+        case "kommer":
         case "är":
         case "borde":
             message.channel.send(borde[Math.floor(Math.random()*borde.length)]+" "+message.author.toString());
+            break;
+        case "ryss":
+            message.channel.send(ryss[Math.floor(Math.random()*ryss.length)]+" "+message.author.toString());
+            break;
+        case "wikipedia":
+            var wikiSearch = message.content.substring(11)
+            message.channel.send("https://en.wikipedia.org/wiki/"+wikiSearch);
             break;
         default:
             message.channel.send("```Detta kommando existerar inte (än)\nSkriv !help för att se de kommandon som faktiskt existerar```");
