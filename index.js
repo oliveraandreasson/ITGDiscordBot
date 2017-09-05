@@ -42,6 +42,8 @@ Date.prototype.getWeek = function() {
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
 }
 
+var skott;
+var pistolLaddad = false;
 var weekNumber = (new Date()).getWeek();
 var widthSchema = "600"
 var heightSchema = "600"
@@ -60,7 +62,7 @@ bot.on("message", (message) => {
             message.channel.send({
                 embed: new Discord.RichEmbed()
                     .setAuthor("Kommandon:", bot.user.avatarURL)
-                    .addField("Allmäna kommandon:", "!help - visar denna meny\n!dab - sprid cancer\n!poll <fråga> - Starta en ja eller nej fråga\n!pinpoll - samma som !poll fast den pinnar också\n!borde - låt boten svara på livets svåra frågor\n!ryss - 1/6 risk att du dör")
+                    .addField("Allmäna kommandon:", "!help - visar denna meny\n!dab - sprid cancer\n!poll <fråga> - Starta en ja eller nej fråga\n!pinpoll - samma som !poll fast den pinnar också\n!borde - låt boten svara på livets svåra frågor\n!ryss - spela rysk roulette")
                     .addField("Skolrelaterade kommandon:", "!schema - visar veckans schema\n!schemavecka <vecka> - visar schemat från en viss vecka\n!vecka - visar veckan\n!wikipedia <sida> - låter dig gå till en viss wikipedia hemsida")
                     .addField("Discord kommandon:", "!hex - ger dig en slumpmässig färg\n!hexdisplay <hex> - visar fägen som det inskrivna hex nummret ger\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)\n!getid - Visar ditt user id")
                     .setColor("0x111111")
@@ -168,7 +170,24 @@ bot.on("message", (message) => {
             message.channel.send(borde[Math.floor(Math.random()*borde.length)]+" "+message.author.toString());
             break;
         case "ryss":
-            message.channel.send(ryss[Math.floor(Math.random()*ryss.length)]+" "+message.author.toString());
+            if (pistolLaddad === false) {
+                message.channel.send("Laddar Pistolen");
+                pistolLaddad = true;
+                skott = Math.floor((Math.random() * 6) + 1);
+            }
+            else {
+                if (skott === 1) {
+                    message.channel.send("Du dog "+message.author.toString());
+                    pistolLaddad = false;
+                }
+                else {
+                    message.channel.send("Du överlevde "+message.author.toString());
+                    skott -= 1;
+                    console.log(skott);
+                }
+            }
+            
+            //message.channel.send(ryss[Math.floor(Math.random()*ryss.length)]+" "+message.author.toString());
             break;
         case "wikipedia":
             var wikiSearch = message.content.substring(11)
