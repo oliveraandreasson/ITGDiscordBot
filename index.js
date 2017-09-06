@@ -74,7 +74,7 @@ bot.on("message", (message) => {
         case "s":
         case "schema":
             var valfriVecka = message.content.substring(8)
-            if (valfriVecka === null) {
+            if (valfriVecka === "") {
                 valfriVecka = weekNumber;
             }
             
