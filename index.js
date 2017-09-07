@@ -193,6 +193,18 @@ bot.on("message", (message) => {
             var wikiSearch = message.content.substring(11)
             message.channel.send("https://en.wikipedia.org/wiki/"+wikiSearch);
             break;
+        case "wikise":
+            var wikiSearch = message.content.substring(8)
+            message.channel.send("https://sv.wikipedia.org/wiki/"+wikiSearch);
+            break;
+        case "wikisök":
+            var wikiSearch = message.content.substring(8)
+            message.channel.send("https://en.wikipedia.org/w/index.php?search="+wikiSearch);
+        break;
+            
+        case "test":
+            message.channel.send("https://itgappen.se/api/2/lunch");	
+            break;
         default:
             message.channel.send("```Detta kommando existerar inte (än)\nSkriv !help för att se de kommandon som faktiskt existerar```");
     }
