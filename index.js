@@ -186,7 +186,6 @@ bot.on("message", (message) => {
                     console.log(skott);
                 }
             }
-            
             //message.channel.send(ryss[Math.floor(Math.random()*ryss.length)]+" "+message.author.toString());
             break;
         case "wikipedia":
@@ -200,8 +199,7 @@ bot.on("message", (message) => {
         case "wikisök":
             var wikiSearch = message.content.substring(8)
             message.channel.send("https://en.wikipedia.org/w/index.php?search="+wikiSearch);
-        break;
-            
+            break;
         case "test":
             message.channel.send("https://itgappen.se/api/2/lunch");	
             break;
