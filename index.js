@@ -110,23 +110,22 @@ bot.on("message", (message) => {
         case "bet":
             console.log("I början: "+betExist);
             if (betExist === true) {
-                console.log
+                console.log("Bet: "+bet);
                 console.log("den gick vidare");
                 message.channel.send(betStarter+" och "+message.author.toString()+" bettar om "+bet);
                 betWinner = Math.random() < 0.5 ? betStarterId : message.author.id;
                 console.log("Vinnare: "+betWinner);
                 if (betWinner === betStarterId) {
-                    message.channel.send(betStarter+ " Vann betet på "+bet);
                     betWinnerCall = betStarter;
                     betLoser = message.author.id;
                     betLoserCall = message.author.toString();
                 }
                 else {
-                    message.channel.send(message.author.toString()+ " Vann betet på "+bet);
                     betWinnerCall = message.author.toString();
                     betLoser = betStarterId;
                     betLoserCall = betStarter;
                 }
+                message.channel.send(betWinnerCall+ " Vann betet på "+bet);
                 var vinnarensSaldo;
                 var loserSaldo;
 
@@ -135,20 +134,20 @@ bot.on("message", (message) => {
                         message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
                         return;
                     }
-                    loserSaldo = data;
+                    loserSaldo = parseInt(data)  -  parseInt(bet);
                     console.log("Förlorare: "+loserSaldo);
-                    fs.createWriteStream("wallets/"+betLoser+".txt").write(loserSaldo - bet);
-                    message.channel.send(betLoserCall+" Ditt saldo är nu: "+loserSaldo - bet);
+                    message.channel.send(betLoserCall+" Ditt saldo är nu: "+loserSaldo);
+                    fs.createWriteStream("wallets/"+betLoser+".txt").write(""+loserSaldo);
                 });
                 fs.readFile("wallets/"+betWinner+".txt", function read(err, data) {
                     if (err) {
                         message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
                         return;
                     }
-                    vinnarensSaldo = data;
-                    console.log("Förlorare: "+vinnarensSaldo);
-                    fs.createWriteStream("wallets/"+betWinner+".txt").write(vinnarensSaldo+bet);
-                    message.channel.send(betWinnerCall+" Ditt saldo är nu: "+vinnarensSaldo*1+bet*1);
+                    vinnarensSaldo = parseInt(data)  +  parseInt(bet);
+                    console.log("Vinnare: "+vinnarensSaldo);
+                    fs.createWriteStream("wallets/"+betWinner+".txt").write(vinnarensSaldo);
+                    message.channel.send(betWinnerCall+" Ditt saldo är nu: "+vinnarensSaldo);
                     betExist = false;
                 });
             }
