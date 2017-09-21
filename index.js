@@ -110,6 +110,7 @@ bot.on("message", (message) => {
         case "bet":
             console.log("I början: "+betExist);
             if (betExist === true) {
+                console.log
                 console.log("den gick vidare");
                 message.channel.send(betStarter+" och "+message.author.toString()+" bettar om "+bet);
                 betWinner = Math.random() < 0.5 ? betStarterId : message.author.id;
@@ -136,8 +137,8 @@ bot.on("message", (message) => {
                     }
                     loserSaldo = data;
                     console.log("Förlorare: "+loserSaldo);
-                    fs.createWriteStream("wallets/"+betLoser+".txt").write(loserSaldo-bet);
-                    message.channel.send(betLoserCall+" Ditt saldo är nu: "+loserSaldo-bet);
+                    fs.createWriteStream("wallets/"+betLoser+".txt").write(loserSaldo - bet);
+                    message.channel.send(betLoserCall+" Ditt saldo är nu: "+loserSaldo - bet);
                 });
                 fs.readFile("wallets/"+betWinner+".txt", function read(err, data) {
                     if (err) {
@@ -234,6 +235,10 @@ bot.on("message", (message) => {
             break;
         case "github":
             message.author.send("https://github.com/ChilladeChillin/ITGDiscordBot");
+            break;
+        case "gr":
+            var rad = message.content.substring(4);
+            message.channel.send("https://github.com/ChilladeChillin/ITGDiscordBot/blob/master/index.js#L"+rad);
             break;
         case "dab":
             message.channel.send(dabRespond[Math.floor(Math.random() * dabRespond.length)]);
