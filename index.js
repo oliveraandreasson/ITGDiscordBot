@@ -134,10 +134,11 @@ bot.on("message", (message) => {
                         message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
                         return;
                     }
+                    //loserSaldo = parseInt(data)  -  parseInt(bet);
                     loserSaldo = parseInt(data)  -  parseInt(bet);
                     console.log("Förlorare: "+loserSaldo);
                     message.channel.send(betLoserCall+" Ditt saldo är nu: "+loserSaldo);
-                    fs.createWriteStream("wallets/"+betLoser+".txt").write(""+loserSaldo);
+                    fs.writeFile("wallets/"+betLoser+".txt", loserSaldo);
                 });
                 fs.readFile("wallets/"+betWinner+".txt", function read(err, data) {
                     if (err) {
@@ -146,7 +147,7 @@ bot.on("message", (message) => {
                     }
                     vinnarensSaldo = parseInt(data)  +  parseInt(bet);
                     console.log("Vinnare: "+vinnarensSaldo);
-                    fs.createWriteStream("wallets/"+betWinner+".txt").write(vinnarensSaldo);
+                    fs.writeFile("wallets/"+betWinner+".txt", vinnarensSaldo);
                     message.channel.send(betWinnerCall+" Ditt saldo är nu: "+vinnarensSaldo);
                     betExist = false;
                 });
