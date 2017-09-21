@@ -1,10 +1,24 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const date = require("date");
+const YTDL = require("ytdl-core");
 const bot = new Discord.Client();
 const prefix = "!";
 const botToken = require("./bottoken");
 const playArbitraryFFmpeg = require('discord.js-arbitrary-ffmpeg');
+
+function play(connection, message) {
+    var server =servers[message.guild.id];
+
+    server.dispatcher = connection.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
+
+    server.queue.shift();
+
+    server.dispatcher.on("end", function() {
+        if (server.queue[0]) play(connection, message);
+        else connection.disconnect();
+    });
+}
 
 bot.on("disconnect", () => {
 	console.log("Disconnected, trying to login again in 30 seconds");
@@ -21,7 +35,7 @@ bot.on("ready", () => {
     bot.user.setGame("Skriv !help för hjälp.");
 });
 
-var musicDir = "~/musik/"
+var servers = {};
 
 var borde = [
     "Ja",
@@ -44,12 +58,19 @@ Date.prototype.getWeek = function() {
     var onejan = new Date(this.getFullYear(), 0, 1);
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
 }
-
+var betWinner;
+var betWinnerCall;
+var bet;
+var betStarterId;
+var betStarter;
+var betLoserCall;
+var betLoser;
+var betExist = false;
 var skott;
 var pistolLaddad = false;
 var weekNumber = (new Date()).getWeek();
-var widthSchema = "600"
-var heightSchema = "600"
+var widthSchema = "600";
+var heightSchema = "600";
 
 bot.on("message", (message) => {
     if (!message.content.startsWith(prefix)) return;
@@ -71,77 +92,134 @@ bot.on("message", (message) => {
                     .setColor("0x111111")
             });
             break;
+        case "saldo":
+            var saldo;
+            fs.readFile("wallets/"+message.author.id+".txt", function read(err, data) {
+                if (err) {
+                    message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
+                    return;
+                }
+                saldo = data;
+                processFile();          // Or put the next step in a function and invoke it
+            });
+            
+            function processFile() {
+                message.channel.send(message.author.toString()+" Ditt saldo är: "+saldo);
+            }
+            break;
+        case "bet":
+            console.log("I början: "+betExist);
+            if (betExist === true) {
+                console.log("den gick vidare");
+                message.channel.send(betStarter+" och "+message.author.toString()+" bettar om "+bet);
+                betWinner = Math.random() < 0.5 ? betStarterId : message.author.id;
+                console.log("Vinnare: "+betWinner);
+                if (betWinner === betStarterId) {
+                    message.channel.send(betStarter+ " Vann betet på "+bet);
+                    betWinnerCall = betStarter;
+                    betLoser = message.author.id;
+                    betLoserCall = message.author.toString();
+                }
+                else {
+                    message.channel.send(message.author.toString()+ " Vann betet på "+bet);
+                    betWinnerCall = message.author.toString();
+                    betLoser = betStarterId;
+                    betLoserCall = betStarter;
+                }
+                var vinnarensSaldo;
+                var loserSaldo;
+
+                fs.readFile("wallets/"+betLoser+".txt", function read(err, data) {
+                    if (err) {
+                        message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
+                        return;
+                    }
+                    loserSaldo = data;
+                    console.log("Förlorare: "+loserSaldo);
+                    fs.createWriteStream("wallets/"+betLoser+".txt").write(loserSaldo-bet);
+                    message.channel.send(betLoserCall+" Ditt saldo är nu: "+loserSaldo-bet);
+                });
+                fs.readFile("wallets/"+betWinner+".txt", function read(err, data) {
+                    if (err) {
+                        message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
+                        return;
+                    }
+                    vinnarensSaldo = data;
+                    console.log("Förlorare: "+vinnarensSaldo);
+                    fs.createWriteStream("wallets/"+betWinner+".txt").write(vinnarensSaldo+bet);
+                    message.channel.send(betWinnerCall+" Ditt saldo är nu: "+vinnarensSaldo*1+bet*1);
+                    betExist = false;
+                });
+            }
+            else {
+                betStarter = message.author.toString();
+                console.log(betStarter);
+                betStarterId = message.author.id;
+                bet = message.content.substring(5);
+                message.channel.send(betStarter+" bettar "+bet+"\nSkriv !bet för att betta emot");
+                betExist = true;
+            }
+            break;
+        case "plånbok":
+            fs.stat("wallets/"+message.author.id+".txt", function(err, stat) {
+                if(err == null) {
+                    message.channel.send("Du har redan en plånbok!");
+                } else if(err.code == 'ENOENT') {
+                    var wstream = fs.createWriteStream("wallets/"+message.author.id+".txt");
+                    wstream.write("100");
+                    message.channel.send("Du har nu en plånbok");
+                    return;
+                } else {
+                    console.log("Some other error: ", err.code);
+                }
+            });
+            break;
         case "vecka":
             message.channel.send(weekNumber);
             break;
-        case "join":
-            if (!message.guild) return;
-                // Only try to join the sender's voice channel if they are in one themselves
-                if (message.member.voiceChannel) {
-                message.member.voiceChannel.join()
-                    .then(connection => { // Connection is an instance of VoiceConnection
-                        message.reply("I have successfully connected to the channel!");
-                    })
-                    .catch(console.log);
-                }
-                else {
-                    message.reply("You need to join a voice channel first!");
-                }
-                let arrFFmpegParams = [
-                    '-i', 'musik/thisisnottheend.mp3',
-                    '-filter:a', 'asetrate=r=66K'
-                ];
-                
-                const objStreamDispatcher = playArbitraryFFmpeg(
-                    VoiceConnection, // A VoiceConnection from Discord.js
-                    arrFFmpegParams,
-                    {volume: .25} // Optional stream options (same as for playFile, playStream, etc.)
-                );
-            break;
         case "play":
-            
-            break;
-        /*case "leave":
-            client.internal.leaveVoiceChannel();
-		    // Return to prevent further commands
-		    break;
-        case "stop":
-            if (client.internal.voiceConnection) {
-			// ... stop the current playback
-			    client.internal.voiceConnection.stopPlaying();
-		    }
-            break;
-        case "init":
-        // Iterate over all channels
-		    for (var channel of message.channel.server.channels) {
-			// If the channel is a voice channel, ...
-			    if (channel instanceof Discord.VoiceChannel) {
-				// ... reply with the channel name and the ID ...
-				    client.reply(message, channel.name + " - " + channel.id);
-				    // ... and join the channel
-				    client.joinVoiceChannel(channel).catch(error);
-				    // Afterwards, break the loop so the bot doesn't join any other voice
-				    // channels
-				    break;
-			    }
+            if (message.content.substring(5) === "") {
+                message.channel.send("Glöm inte bort att skicka en länk också");
+                return;
             }
+
+            if (!message.member.voiceChannel) {
+                message.channel.send("Du måste vara i en voicechannel först");
+                return;
+            }
+
+            if(!servers[message.guild.id]) servers[message.guild.id] = {
+                queue: []
+            }
+
+            var server = servers[message.guild.id];
+
+            server.queue.push(message.content.substring(6));
+
+            if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
+                play(connection, message);
+            });
             break;
-        case "play":
-            if (client.internal.voiceConnection) {
-			    // ...tell the user that you will play the file...
-			    client.reply(m, "härligt");
-			    // ...get the voice connection that is currently active...
-			    var connection = client.internal.voiceConnection;
-			    // ...get the path from which to load the file (the hardcoded directory
-			    // concatenated with the argument to the command)...
-			    var filePath = musicDir + "thisisnottheend.mp3"
-			    // ...and play the file
-			    connection.playFile(filePath);
-		    }
-            break;*/
+        case "skip":
+            var server = servers[message.guild.id];
+
+            if (server.dispatcher) server.dispatcher.end();
+            break;
+        case "theend":
+            message.member.voiceChannel.join()
+                .then(connection => {
+                    const dispatcher = connection.playFile("C:/Users/emrik.ostling/Documents/Programmering/Discord/ITGDiscordBot/musik/thisisnottheend.mp3");
+                    console.log("funkade det?!?");
+                })
+                .catch(console.error);
+            break;
+        case "stop":
+            var server = servers[message.guild.id];
+            if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
+            break;
         case "s":
         case "schema":
-            var valfriVecka = message.content.substring(8)
+            var valfriVecka = message.content.substring(8);
             if (valfriVecka === "") {
                 valfriVecka = weekNumber;
             }
@@ -185,42 +263,42 @@ bot.on("message", (message) => {
             });
             break;
         case "poll":
-            var question = message.content.substring(6)
+            var question = message.content.substring(6);
             message.delete(0);
             message.channel.send(question+"\n\n`👍=JA 👎=NEJ`")
                 .then(function (message) {
-                    message.react("👍")
-                    message.react("👎")
+                    message.react("👍");
+                    message.react("👎");
                 }).catch(function() {
-                    console.log("Reaktionen gick inte hela vägen fram")
+                    console.log("Reaktionen gick inte hela vägen fram");
                    });
             break;
         case "pinpoll":
-            var question = message.content.substring(9)
+            var question = message.content.substring(9);
             message.delete(0);
             if (message.author.id==="164283691802165250" || "349987894171271178") {
                 message.channel.send(question+"\n\n`👍=JA 👎=NEJ`")
                 .then(function (message) {
-                    message.react("👍")
-                    message.pin()
+                    message.react("👍");
+                    message.pin();
                     //delay(10)
-                    message.react("👎")
+                    message.react("👎");
                 }).catch(function() {
-                    console.log("Reaktionen gick inte hela vägen fram (pinpoll)")
+                    console.log("Reaktionen gick inte hela vägen fram (pinpoll)");
                     });
             }
             else {
                 message.author.send("Du har inte tillåtelse att använda detta kommando");
             }
             break;
-        case "hd":
+        //case "hd":
         case "hexdisplay":
-            var hexMessage = message.content.substring(12)
+            var hexMessage = message.content.substring(12);
             if (hexMessage.substr(0, 1) === "#") {
-                var hexMessageFix = hexMessage.substing(1)
+                var hexMessageFix = hexMessage.substing(1);
             }
             else {
-                var hexMessageFix = hexMessage
+                var hexMessageFix = hexMessage;
             }
             message.channel.send({
                 embed: new Discord.RichEmbed()
@@ -255,19 +333,19 @@ bot.on("message", (message) => {
             }
             break;
         case "wikipedia":
-            var wikiSearch = message.content.substring(11)
+            var wikiSearch = message.content.substring(11);
             message.channel.send("https://en.wikipedia.org/wiki/"+wikiSearch);
             break;
         case "wikise":
-            var wikiSearch = message.content.substring(8)
+            var wikiSearch = message.content.substring(8);
             message.channel.send("https://sv.wikipedia.org/wiki/"+wikiSearch);
             break;
         case "wikisök":
-            var wikiSearch = message.content.substring(9)
+            var wikiSearch = message.content.substring(9);
             message.channel.send("https://en.wikipedia.org/w/index.php?search="+wikiSearch);
             break;
         case "google":
-            var googleSearch = message.content.substring(8)
+            var googleSearch = message.content.substring(8);
             message.channel.send("https://www.google.se/search?q="+googleSearch);
             break;
         //case "test":
