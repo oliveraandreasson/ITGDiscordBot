@@ -237,6 +237,7 @@ bot.on("message", (message) => {
             message.author.send("https://github.com/ChilladeChillin/ITGDiscordBot");
             break;
         case "gr":
+            message.delete(0);
             var rad = message.content.substring(4);
             message.channel.send("https://github.com/ChilladeChillin/ITGDiscordBot/blob/master/index.js#L"+rad);
             break;
