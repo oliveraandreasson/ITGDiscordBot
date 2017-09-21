@@ -91,6 +91,12 @@ bot.on("message", (message) => {
                     .addField("Discord kommandon:", "!hex - ger dig en slumpmässig färg\n!hexdisplay <hex> - visar fägen som det inskrivna hex nummret ger\n!github - skickar länken till botens github repo\n!ping - visar botens internal ping (för felsökning)\n!getid - visar ditt user id")
                     .setColor("0x111111")
             });
+            message.channel.send({
+                embed: new Discord.RichEmbed()
+                    .addField("Ekonomi kommandon:", "!plånbok - skapar en personlig plånbok åt dig\n!saldo - visar ditt saldo\n!bet <amount> - flipa en slant med någon och se vem som vinner pengarna")
+                    .addField("Musik kommandon:", "!play <url> - spelar en youtube url\n!skip - skippar låten som spelas nu\n!stop - stoppar musiken helt\n!theend - spelar upp ett visst tal")
+                    .setColor("0x111111")
+            })
             break;
         case "saldo":
             var saldo;
@@ -207,17 +213,31 @@ bot.on("message", (message) => {
             if (server.dispatcher) server.dispatcher.end();
             break;
         case "theend":
-            message.member.voiceChannel.join()
-                .then(connection => {
-                    const dispatcher = connection.playFile("C:/Users/emrik.ostling/Documents/Programmering/Discord/ITGDiscordBot/musik/thisisnottheend.mp3");
-                    console.log("funkade det?!?");
-                })
-                .catch(console.error);
+            if (!message.member.voiceChannel) {
+                message.channel.send("Du måste vara i en voicechannel först");
+                return;
+            }
+            if(!servers[message.guild.id]) servers[message.guild.id] = {
+                queue: []
+            }
+            var server = servers[message.guild.id];
+            server.queue.push("https://youtu.be/pdRH5wzCQQw");
+                if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
+                    play(connection, message);
+                });
             break;
         case "stop":
             var server = servers[message.guild.id];
-            if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
-            break;
+            if (message.guild.voiceConnection)
+                {
+                    for (var i = server.queue.length - 1; i >= 0; i--) 
+                    {
+                        server.queue.splice(i, 1);
+                }
+                    server.dispatcher.end();
+                    console.log("[" + new Date().toLocaleString() + "] Stopped the queue.");
+                }
+                break;
         case "s":
         case "schema":
             var valfriVecka = message.content.substring(8);
