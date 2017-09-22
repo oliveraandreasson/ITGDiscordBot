@@ -58,6 +58,8 @@ Date.prototype.getWeek = function() {
     var onejan = new Date(this.getFullYear(), 0, 1);
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
 }
+
+var inCash;
 var betWinner;
 var betWinnerCall;
 var bet;
@@ -93,7 +95,7 @@ bot.on("message", (message) => {
             });
             message.channel.send({
                 embed: new Discord.RichEmbed()
-                    .addField("Ekonomi kommandon:", "!plånbok - skapar en personlig plånbok åt dig\n!saldo - visar ditt saldo\n!bet <amount> - flipa en slant med någon och se vem som vinner pengarna")
+                    .addField("Ekonomi kommandon:", "!plånbok - skapar en personlig plånbok åt dig\n!saldo - visar ditt saldo\n!bet <amount> - flipa en slant med någon och se vem som vinner pengarna\n!resetplånbok - resetar din plånbok")
                     .addField("Musik kommandon:", "!play <url> - spelar en youtube url\n!skip - skippar låten som spelas nu\n!stop - stoppar musiken helt\n!theend - spelar upp ett visst tal")
                     .setColor("0x111111")
             })
@@ -113,61 +115,84 @@ bot.on("message", (message) => {
                 message.channel.send(message.author.toString()+" Ditt saldo är: "+saldo);
             }
             break;
+        case "resetplånbok":
+            fs.stat("wallets/"+message.author.id+".txt", function(err, stat) {
+                if(err == null) {
+                    var wstream = fs.createWriteStream("wallets/"+message.author.id+".txt");
+                    wstream.write("10");
+                    message.channel.send("Din plånbok är resetad");
+                    return;
+                } else if(err.code == 'ENOENT') {
+                    message.channel.send("Du har ingen plånbok, skriv !plånbok för att skapa en");
+                } else {
+                    console.log("Some other error: ", err.code);
+                }
+            });
+            break;
         case "bet":
             fs.readFile("wallets/"+message.author.id+".txt", function read(err, data) {
                 if (err) {
                     message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
                     return;
                 }
+                inCash = data;
+                betMain();
             });
-            if (betExist === true) {;
-                message.channel.send(betStarter+" och "+message.author.toString()+" bettar om "+bet);
-                betWinner = Math.random() < 0.5 ? betStarterId : message.author.id;
-                if (betWinner === betStarterId) {
-                    betWinnerCall = betStarter;
-                    betLoser = message.author.id;
-                    betLoserCall = message.author.toString();
-                }
-                else {
-                    betWinnerCall = message.author.toString();
-                    betLoser = betStarterId;
-                    betLoserCall = betStarter;
-                }
-                message.channel.send(betWinnerCall+ " Vann betet på "+bet);
-                var vinnarensSaldo;
-                var loserSaldo;
-
-                fs.readFile("wallets/"+betWinner+".txt", function read(err, data) {
-                    if (err) {
-                        message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
-                        return;
-                    }
-                    vinnarensSaldo = parseInt(data)  +  parseInt(bet);
-                    fs.writeFile("wallets/"+betWinner+".txt", vinnarensSaldo);
-                    message.channel.send(betWinnerCall+" Ditt saldo är nu: "+vinnarensSaldo);
-                    betExist = false;
-                });
-                fs.readFile("wallets/"+betLoser+".txt", function read(err, data) {
-                    if (err) {
-                        message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
-                        return;
-                    }
-                    //loserSaldo = parseInt(data)  -  parseInt(bet);
-                    loserSaldo = parseInt(data)  -  parseInt(bet);
-                    message.channel.send(betLoserCall+" Ditt saldo är nu: "+loserSaldo);
-                    fs.writeFile("wallets/"+betLoser+".txt", loserSaldo);
-                });
-            }
-            else {
-                betStarter = message.author.toString();
-                betStarterId = message.author.id;
-                bet = message.content.substring(5);
-                if (bet == parseInt(bet, 10)) {
-                    message.channel.send(betStarter+" bettar "+bet+"\nSkriv !bet för att betta emot");
-                    betExist = true;
+            function betMain() {
+                console.log(inCash);
+                console.log(bet);
+                if (parseInt(inCash) <= parseInt(bet)) {
+                    message.channel.send(message.author.toString()+" Du kan inte betta mer än du har");
                     return;
                 }
-                message.channel.send("Jag tror inte "+bet+" är ett nummer.");                
+                if (betExist === true) {;
+                    message.channel.send(betStarter+" och "+message.author.toString()+" bettar om "+bet);
+                    betWinner = Math.random() < 0.5 ? betStarterId : message.author.id;
+                    if (betWinner === betStarterId) {
+                        betWinnerCall = betStarter;
+                        betLoser = message.author.id;
+                        betLoserCall = message.author.toString();
+                    }
+                    else {
+                        betWinnerCall = message.author.toString();
+                        betLoser = betStarterId;
+                        betLoserCall = betStarter;
+                    }
+                    message.channel.send(betWinnerCall+ " Vann betet på "+bet);
+                    var vinnarensSaldo;
+                    var loserSaldo;
+
+                    fs.readFile("wallets/"+betWinner+".txt", function read(err, data) {
+                        if (err) {
+                            message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
+                            return;
+                        }
+                        vinnarensSaldo = parseInt(data)  +  parseInt(bet);
+                        fs.writeFile("wallets/"+betWinner+".txt", vinnarensSaldo);
+                        message.channel.send(betWinnerCall+" Ditt saldo är nu: "+vinnarensSaldo);
+                        betExist = false;
+                    });
+                    fs.readFile("wallets/"+betLoser+".txt", function read(err, data) {
+                        if (err) {
+                            message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
+                            return;
+                        }
+                        loserSaldo = parseInt(data)  -  parseInt(bet);
+                        message.channel.send(betLoserCall+" Ditt saldo är nu: "+loserSaldo);
+                        fs.writeFile("wallets/"+betLoser+".txt", loserSaldo);
+                    });
+                }
+                else {
+                    betStarter = message.author.toString();
+                    betStarterId = message.author.id;
+                    bet = message.content.substring(5);
+                    if (bet == parseInt(bet, 10)) {
+                        message.channel.send(betStarter+" bettar "+bet+"\nSkriv !bet för att betta emot");
+                        betExist = true;
+                        return;
+                    }
+                    message.channel.send("Jag tror inte "+bet+" är ett nummer.");                
+                }
             }
             break;
         case "plånbok":
