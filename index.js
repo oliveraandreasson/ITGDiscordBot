@@ -139,7 +139,7 @@ bot.on("message", (message) => {
                     message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
                     return;
                 }
-                inCash = data;
+                inCash = data + 1;
                 betMain();
             });
             function betMain() {
@@ -161,6 +161,10 @@ bot.on("message", (message) => {
                 }
                 
                 else {
+                    if (message.author.id === betStarterId) {
+                        message.channel.send("Du kan inte betta mot dig själv");
+                        return;
+                    }
                     if (parseInt(inCash) <= parseInt(bet)) {
                         message.channel.send(message.author.toString()+" Du kan inte betta mer än du har");
                         return;
