@@ -129,6 +129,10 @@ bot.on("message", (message) => {
                 }
             });
             break;
+        case "removebet":
+            betExist = false;
+            message.channel.send("betet är nu borttaget");
+            break;
         case "bet":
             fs.readFile("wallets/"+message.author.id+".txt", function read(err, data) {
                 if (err) {
@@ -139,13 +143,28 @@ bot.on("message", (message) => {
                 betMain();
             });
             function betMain() {
-                console.log(inCash);
-                console.log(bet);
-                if (parseInt(inCash) <= parseInt(bet)) {
-                    message.channel.send(message.author.toString()+" Du kan inte betta mer än du har");
+                if (betExist === false) {
+                    betStarter = message.author.toString();
+                    betStarterId = message.author.id;
+                    bet = message.content.substring(5);
+                    if (parseInt(inCash) <= parseInt(bet)) {
+                        message.channel.send(message.author.toString()+" Du kan inte betta mer än du har");
+                        return;
+                    }
+                    if (bet == parseInt(bet, 10)) {
+                        message.channel.send(betStarter+" bettar "+bet+"\nSkriv !bet för att betta emot");
+                        betExist = true;
+                        return;
+                    }
+                    message.channel.send("Jag tror inte "+bet+" är ett nummer.");
                     return;
                 }
-                if (betExist === true) {;
+                
+                else {
+                    if (parseInt(inCash) <= parseInt(bet)) {
+                        message.channel.send(message.author.toString()+" Du kan inte betta mer än du har");
+                        return;
+                    }
                     message.channel.send(betStarter+" och "+message.author.toString()+" bettar om "+bet);
                     betWinner = Math.random() < 0.5 ? betStarterId : message.author.id;
                     if (betWinner === betStarterId) {
@@ -181,18 +200,7 @@ bot.on("message", (message) => {
                         message.channel.send(betLoserCall+" Ditt saldo är nu: "+loserSaldo);
                         fs.writeFile("wallets/"+betLoser+".txt", loserSaldo);
                     });
-                }
-                else {
-                    betStarter = message.author.toString();
-                    betStarterId = message.author.id;
-                    bet = message.content.substring(5);
-                    if (bet == parseInt(bet, 10)) {
-                        message.channel.send(betStarter+" bettar "+bet+"\nSkriv !bet för att betta emot");
-                        betExist = true;
-                        return;
-                    }
-                    message.channel.send("Jag tror inte "+bet+" är ett nummer.");                
-                }
+                }  
             }
             break;
         case "plånbok":
