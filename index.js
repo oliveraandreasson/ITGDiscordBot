@@ -378,6 +378,7 @@ bot.on("message", (message) => {
         case "getid":
             message.channel.send(message.author.id);
             break;
+        case "ska":
         case "gillar":
         case "vet":
         case "hade":
