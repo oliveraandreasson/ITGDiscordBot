@@ -334,7 +334,9 @@ bot.on("message", (message) => {
             message.channel.send(question+"\n\n`👍=JA 👎=NEJ`")
                 .then(function (message) {
                     message.react("👍");
-                    message.react("👎");
+                    setTimeout(function(){
+                        message.react("👎");
+                    }, 500);
                 }).catch(function() {
                     console.log("Reaktionen gick inte hela vägen fram");
                    });
