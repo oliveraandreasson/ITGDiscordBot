@@ -98,7 +98,7 @@ bot.on("message", (message) => {
                     .addField("Ekonomi kommandon:", "!plånbok - skapar en personlig plånbok åt dig\n!saldo - visar ditt saldo\n!bet <amount> - flipa en slant med någon och se vem som vinner pengarna\n!resetplånbok - resetar din plånbok")
                     .addField("Musik kommandon:", "!play <url> - spelar en youtube url\n!skip - skippar låten som spelas nu\n!stop - stoppar musiken helt\n!theend - spelar upp ett visst tal")
                     .setColor("0x111111")
-            })
+            });
             break;
         case "saldo":
             var saldo;
@@ -139,7 +139,7 @@ bot.on("message", (message) => {
                     message.channel.send("```Du måste skapa en plånbok först\nSkriv !plånbok för att skapa en```");
                     return;
                 }
-                inCash = data + 1;
+                inCash = parseInt(data) + 1;
                 betMain();
             });
             function betMain() {
@@ -147,6 +147,8 @@ bot.on("message", (message) => {
                     betStarter = message.author.toString();
                     betStarterId = message.author.id;
                     bet = message.content.substring(5);
+                    console.log(bet);
+                    console.log(inCash);
                     if (parseInt(inCash) <= parseInt(bet)) {
                         message.channel.send(message.author.toString()+" Du kan inte betta mer än du har");
                         return;
