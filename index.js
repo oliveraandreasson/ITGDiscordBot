@@ -152,6 +152,10 @@ bot.on("message", (message) => {
                         return;
                     }
                     if (bet == parseInt(bet, 10)) {
+                        if (parseInt(bet) < 0) {
+                            message.channel.send("Du kan inte betta negativ nummer")
+                            return;
+                        }
                         message.channel.send(betStarter+" bettar "+bet+"\nSkriv !bet för att betta emot");
                         betExist = true;
                         return;
