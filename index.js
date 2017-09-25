@@ -409,23 +409,23 @@ bot.on("message", (message) => {
             }
             break;
         case "lmgtfy":
-            var wikiSearch = message.content.substring(8);
+            var wikiSearch = message.content.substring(8).replace(/ /g,"+");
             message.channel.send("http://lmgtfy.com/?q="+wikiSearch);
             break;
         case "wikipedia":
-            var wikiSearch = message.content.substring(11);
+            var wikiSearch = message.content.substring(11).replace(/ /g,"_");
             message.channel.send("https://en.wikipedia.org/wiki/"+wikiSearch);
             break;
         case "wikise":
-            var wikiSearch = message.content.substring(8);
+            var wikiSearch = message.content.substring(8).replace(/ /g,"_");
             message.channel.send("https://sv.wikipedia.org/wiki/"+wikiSearch);
             break;
         case "wikisök":
-            var wikiSearch = message.content.substring(9);
+            var wikiSearch = message.content.substring(9).replace(/ /g,"+");
             message.channel.send("https://en.wikipedia.org/w/index.php?search="+wikiSearch);
             break;
         case "google":
-            var googleSearch = message.content.substring(8);
+            var googleSearch = message.content.substring(8).replace(/ /g,"+");
             message.channel.send("https://www.google.se/search?q="+googleSearch);
             break;
         //case "test":
