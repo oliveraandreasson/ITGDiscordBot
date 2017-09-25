@@ -147,8 +147,6 @@ bot.on("message", (message) => {
                     betStarter = message.author.toString();
                     betStarterId = message.author.id;
                     bet = message.content.substring(5);
-                    console.log(bet);
-                    console.log(inCash);
                     if (parseInt(inCash) <= parseInt(bet)) {
                         message.channel.send(message.author.toString()+" Du kan inte betta mer än du har");
                         return;
