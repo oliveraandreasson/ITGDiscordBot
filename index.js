@@ -5,7 +5,6 @@ const YTDL = require("ytdl-core");
 const bot = new Discord.Client();
 const prefix = "!";
 const botToken = require("./bottoken");
-const playArbitraryFFmpeg = require('discord.js-arbitrary-ffmpeg');
 
 function play(connection, message) {
     var server =servers[message.guild.id];
@@ -408,6 +407,10 @@ bot.on("message", (message) => {
                     skott -= 1;
                 }
             }
+            break;
+        case "lmgtfy":
+            var wikiSearch = message.content.substring(8);
+            message.channel.send("http://lmgtfy.com/?q="+wikiSearch);
             break;
         case "wikipedia":
             var wikiSearch = message.content.substring(11);
