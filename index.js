@@ -40,7 +40,12 @@ var servers = {};
 
 var borde = [
     "Ja",
-    "Nej"
+    "Ja",
+    "Ja",
+    "Nej",
+    "Nej",
+    "Nej",
+    "Kanske"
 ];
 
 var dabRespond = [
