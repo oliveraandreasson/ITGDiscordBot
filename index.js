@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 const Discord = require("discord.js");
 const fs = require("fs");
 const date = require("date");
@@ -56,7 +58,7 @@ var dabRespond = [
 Date.prototype.getWeek = function() {
     var onejan = new Date(this.getFullYear(), 0, 1);
     return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
-}
+};
 
 var inCash;
 var betWinner;
@@ -152,7 +154,7 @@ bot.on("message", (message) => {
                     }
                     if (bet == parseInt(bet, 10)) {
                         if (parseInt(bet) < 0) {
-                            message.channel.send("Du kan inte betta negativ nummer")
+                            message.channel.send("Du kan inte betta negativ nummer");
                             return;
                         }
                         message.channel.send(betStarter+" bettar "+bet+"\nSkriv !bet för att betta emot");
@@ -240,7 +242,7 @@ bot.on("message", (message) => {
 
             if(!servers[message.guild.id]) servers[message.guild.id] = {
                 queue: []
-            }
+            };
 
             var server = servers[message.guild.id];
 
@@ -262,7 +264,7 @@ bot.on("message", (message) => {
             }
             if(!servers[message.guild.id]) servers[message.guild.id] = {
                 queue: []
-            }
+            };
             var server = servers[message.guild.id];
             server.queue.push("https://youtu.be/pdRH5wzCQQw");
                 if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
@@ -283,7 +285,13 @@ bot.on("message", (message) => {
                 break;
         case "s":
         case "schema":
-            var valfriVecka = message.content.substring(8);
+            if (message.content.charAt(4) === "e") {
+                var valfriVecka = message.content.substring(8);
+            }
+            else {
+                var valfriVecka = message.content.substring(3);
+            }
+
             if (valfriVecka === "") {
                 valfriVecka = weekNumber;
             }
@@ -313,12 +321,11 @@ bot.on("message", (message) => {
             message.delete(0);
             if (message.author.id==="164283691802165250") {
                 message.channel.send(message.content.substring(5));
-                break;
             }
             else {
                 message.author.send("Du har inte tillåtelse att använda detta kommando");
-                break;
             }
+            break;
         case "ping":
             message.channel.send(bot.ping+" ms");
             break;
