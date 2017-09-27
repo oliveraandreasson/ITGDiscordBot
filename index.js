@@ -395,6 +395,7 @@ bot.on("message", (message) => {
             message.channel.send(message.author.id);
             break;
         case "itg":
+        case "har":
         case "ska":
         case "gillar":
         case "vet":
@@ -441,6 +442,14 @@ bot.on("message", (message) => {
         case "google":
             var googleSearch = message.content.substring(8).replace(/ /g,"+");
             message.channel.send("https://www.google.se/search?q="+googleSearch);
+            break;
+        case "vem":
+            var statement = message.content.substring(6);
+            if (statement.endsWith("?")) {
+                var statement = message.content.substring(6).replace("?", ".");
+            }
+            var firstLetter = message.content.substring(5, 6).toUpperCase();
+            message.channel.send(message.guild.members.random().toString()+" "+firstLetter+statement);
             break;
         //case "test":
             //message.channel.send("https://itgappen.se/api/2/lunch");	
