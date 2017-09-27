@@ -3,3 +3,8 @@
 module.exports = [
     "Av ett tåg."
     ];
+"<molestad av en igelkott>"
+"<spottad på av Kevin>"
+"<dissad av hon-som-inte-får-nämnas>"
+"<halalslaktad av Nasir>"
+"<uppäten av rektorn>"
