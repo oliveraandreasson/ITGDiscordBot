@@ -369,11 +369,17 @@ bot.on("message", (message) => {
                 message.author.send("Du har inte tillåtelse att använda detta kommando");
             }
             break;
-        //case "hd":
+        case "hd":
         case "hexdisplay":
-            var hexMessage = message.content.substring(12);
-            if (hexMessage.substr(0, 1) === "#") {
-                var hexMessageFix = hexMessage.substing(1);
+            var hexMessage;
+            if (message.content.charAt(4) === "d") {
+                var hexMessage = message.content.substring(12);
+            }
+            else {
+                var hexMessage = message.content.substring(4);
+            }
+            if (hexMessage.charAt(0) === "#") {
+                var hexMessageFix = hexMessage.substring(1);
             }
             else {
                 var hexMessageFix = hexMessage;
@@ -388,6 +394,7 @@ bot.on("message", (message) => {
         case "getid":
             message.channel.send(message.author.id);
             break;
+        case "itg":
         case "ska":
         case "gillar":
         case "vet":
