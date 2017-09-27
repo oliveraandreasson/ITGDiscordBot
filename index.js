@@ -36,6 +36,8 @@ bot.on("ready", () => {
     bot.user.setGame("Skriv !help för hjälp.");
 });
 
+var hurExempel = require('./hurExempel');
+
 var servers = {};
 
 var borde = [
@@ -105,6 +107,9 @@ bot.on("message", (message) => {
                     .addField("Musik kommandon:", "!play <url> - spelar en youtube url\n!skip - skippar låten som spelas nu\n!stop - stoppar musiken helt\n!theend - spelar upp ett visst tal")
                     .setColor("0x111111")
             });
+            break;
+        case "hur":
+            message.channel.sendMessage(hurExempel[Math.floor(Math.random() * hurExempel.length)]);
             break;
         case "saldo":
             var saldo;
@@ -447,6 +452,9 @@ bot.on("message", (message) => {
         case "google":
             var googleSearch = message.content.substring(8).replace(/ /g,"+");
             message.channel.send("https://www.google.se/search?q="+googleSearch);
+            break;
+        case "random":
+
             break;
         case "vem":
             var statement = message.content.substring(6);
